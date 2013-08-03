@@ -6,3 +6,20 @@ body {
 a {
   color: #00B7FF;
 }
+
+.user-list li {
+  margin: 5px 0;
+}
+
+.user-list li .name {
+  display: inline-block;
+  width:   200px;
+}
+
+.user-list li .actions {
+  display: inline-block;
+}
+
+.user-list input {
+  margin-right: 5px;
+}

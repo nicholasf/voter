@@ -4,6 +4,14 @@ block content
   h1= title
   p Welcome to #{title}
   #app-container(ng-app=true)
-    input(type="text", ng-model="name", placeholder="Enter a name here")
+    .user-list(ng-controller="UserList")
+      h2 Users
+      ul
+        li(ng-repeat="user in users")
+          .name {{user}}
+          .actions
+            button.btn(ng-click='deleteUser(user)') Delete
 
-    h1 Hi {{name}}, Angular is working
+      form.form-inline(ng-submit='addUser()')
+        input(type='text', ng-model="name")
+        input.btn-primary(type="submit", value="Add")

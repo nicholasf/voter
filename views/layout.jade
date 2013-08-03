@@ -2,6 +2,13 @@ doctype 5
 html
   head
     title= title
+    link(rel='stylesheet', href='/lib/bootstrap-css/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='/lib/jquery/jquery.js')
+    script(src='/lib/angular/angular.min.js')
+    script(src='/javascript/app.js')
+    script
+      (new Application()).start();
+
   body
     block content

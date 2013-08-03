@@ -3,3 +3,7 @@ extends layout
 block content
   h1= title
   p Welcome to #{title}
+  #app-container(ng-app=true)
+    input(type="text", ng-model="name", placeholder="Enter a name here")
+
+    h1 Hi {{name}}, Angular is working

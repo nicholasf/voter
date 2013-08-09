@@ -1,10 +1,18 @@
 h2 Voting topic: #{votingTopic.name}
 br
 br
-p the choices look like #{votingTopic.choices}
+p
+form
+  each choice in votingTopic.choices
+    input(type='radio', name='choice', value= #{choice.value}, id=#{choice.value})
+    label= choice.text
+  p
+  input(type="textfield", name='voter')
+  label Please enter your name.
+br
+br
 
-br
-br
+
 
 p Created by: #{votingTopic.creator} at #{votingTopic.createdAt}.
 p Expires: #{votingTopic.expires}

@@ -5,6 +5,10 @@ html
     link(rel='stylesheet', href='/app.css')
     script(src='/lib/angular/angular.min.js')
     script(src='/javascript/users.js')
+    script(src="lib/sockjs/sockjs.min.js")
+    script
+      var sockjs_url = '/echo';
+      var sockjs = new SockJS(sockjs_url);
 
   body
     block content

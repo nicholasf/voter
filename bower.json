@@ -10,6 +10,7 @@
   ],
   "dependencies": {
     "angular": "*",
-    "bootstrap-css": "*"
+    "bootstrap-css": "*",
+    "sockjs": "~0.3.4"
   }
 }

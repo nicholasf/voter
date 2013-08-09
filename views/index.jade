@@ -1,8 +1,6 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
   #app-container(ng-app=true)
     .user-list(ng-controller="UserList")
       h2 Users

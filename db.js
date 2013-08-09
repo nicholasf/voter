@@ -2,7 +2,7 @@
 
 var db = {};
 
-db.votingTopics = {};
+db.polls = {};
 db.votes        = {};
 db.voters       = {};
 

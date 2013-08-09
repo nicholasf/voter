@@ -55,10 +55,10 @@ server.listen(app.get('port'), function(){
 });
 
 // setting up a voting topic, just to get some dummy data rolling
-var VotingTopic = require('./models/voting_topic');
+var Poll = require('./models/poll');
 var choices = [{value: 1, text: "Red"}, {value: 2, text: "White"}]
-var votingTopic = new VotingTopic("Left Or Right", "nicholasf", 30, choices);
-db.votingTopics[votingTopic.uri] = votingTopic;
+var poll = new Poll("Left Or Right", "nicholasf", 30, choices);
+db.polls[poll.uri] = poll;
 
 
 

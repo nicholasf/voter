@@ -1,10 +1,10 @@
 var db = require('../db');
 
 exports.show = function(req, res){
-  var votingTopicId = req.params['votingTopicId'];
-  var votingTopic = db.votingTopics[votingTopicId];
+  var pollId = req.params['pollId'];
+  var poll = db.polls[pollId];
 
-  res.render('voting_topics/show', {votingTopic: votingTopic});
+  res.render('polls/show', {poll: poll});
 }
 
 // exports.new = function(req, res){

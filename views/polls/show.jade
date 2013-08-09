@@ -1,9 +1,9 @@
-h2 Voting topic: #{votingTopic.name}
+h2 Voting topic: #{poll.name}
 br
 br
 p
 form
-  each choice in votingTopic.choices
+  each choice in poll.choices
     input(type='radio', name='choice', value= #{choice.value}, id=#{choice.value})
     label= choice.text
   p
@@ -14,6 +14,6 @@ br
 
 
 
-p Created by: #{votingTopic.creator} at #{votingTopic.createdAt}.
-p Expires: #{votingTopic.expires}
+p Created by: #{poll.creator} at #{poll.createdAt}.
+p Expires: #{poll.expires}
 

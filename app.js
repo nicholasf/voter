@@ -8,7 +8,8 @@ var express = require('express')
   , path    = require('path')
   , env     = require('./conf/env')
   , stylus  = require('stylus')
-  , sockjs  = require('sockjs');
+  , sockjs  = require('sockjs')
+  , db      = require('./db');
 
 var echo = sockjs.createServer();
 echo.on('connection', function(conn) {
@@ -52,3 +53,12 @@ echo.installHandlers(server, {prefix:'/echo'});
 server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+// setting up a voting topic, just to get some dummy data rolling
+var VotingTopic = require('./models/voting_topic');
+var choices = [[1, "Red"], [2, "White"]]
+var votingTopic = new VotingTopic("Left Or Right", "nicholasf", 30, choices);
+db.votingTopics[votingTopic.uri] = votingTopic;
+
+
+

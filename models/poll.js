@@ -9,14 +9,19 @@ require('sugar');
 //note - this means that anyone who can access the URL of the
 //topic can vote (easier than inviting people).
 
-var votingTopic = function(name, creator, expires, choices){
+var Poll = function(name, creator, expires, choices){
   this.name       = name;
   this.creator    = creator;
   this.expires    = expires;
   this.choices    = choices;
   this.createdAt  = new Date();
   this.uri        = name.dasherize();
+  this.votes      = [];
   console.log("Created votingTopic: ", this.uri);
+
+  this.addVote = function(vote){
+    this.votes.push(vote);
+  }
 }
 
-module.exports = votingTopic;
+module.exports = Poll;

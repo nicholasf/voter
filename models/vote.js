@@ -1,10 +1,11 @@
 //a vote has the name of the voting topic (need to find an id scheme)
 //a voter (email address)
 //a createdAt
-var vote = function(votingTopicName, voter){
-  this.votingTopicName  = creator;
+var Vote = function(pollUri, voter, choice){
+  this.pollUri          = pollUri;
   this.voter            = voter;
-  this.createdAt        = createdAt;
+  this.choice           = choice;
+  this.createdAt        = new Date();
 }
 
-module.exports = votingTopic;
+module.exports = Vote;

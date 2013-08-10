@@ -58,6 +58,7 @@ server.listen(app.get('port'), function(){
 var Poll = require('./models/poll');
 var choices = [{value: 1, text: "Red"}, {value: 2, text: "White"}]
 var poll = new Poll("Left Or Right", "nicholasf", 30, choices);
+console.log(poll);
 db.polls[poll.uri] = poll;
 
 

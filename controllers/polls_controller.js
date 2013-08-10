@@ -1,21 +1,14 @@
 var db = require('../db');
 
-exports.show = function(req, res){
+/** Middlewares **/
+var getPoll = exports.getPoll = function(req, res, next){
   var pollId = req.params['pollId'];
   var poll = db.polls[pollId];
-
-  res.render('polls/show', {poll: poll});
+  req.poll = poll;
+  next();
 }
 
-// exports.new = function(req, res){
-// //  res.render('index', { title: 'Voter' });
-// }
-
-// exports.create = function(req, res){
-// //  res.render('index', { title: 'Voter' });
-
-// }
-
-// exports.index = function(req, res){
-// //  res.render('index', { title: 'Voter' });
-// }
+/** Actions **/
+exports.show = function(req, res){
+  res.render('polls/show', {poll: req.poll});
+}

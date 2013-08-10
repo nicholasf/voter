@@ -29,6 +29,7 @@ var Poll = function(name, creator, expires, choices, votes){
 
   this.addVote = function(vote){
     this.votes.push(vote);
+    this.save();
   }
 
   this.votesFor = function(choice){

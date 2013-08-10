@@ -1,20 +1,23 @@
-h2 Voting topic: #{poll.name}
-br
-p
-form(method='post', action='/polls/#{poll.uri}/vote')
-  input(type='hidden', name='pollId', value=#{poll.uri})
-  p
-    label Please enter your name:
-    input(type="textfield", name='voter')
-  p
-    each choice in poll.choices
-      input(type='radio', name='choice', value= choice.value, id=choice.value)
-      label= choice.text
-  p
-    input(type='submit')
-br
-br
+extends ../layout
 
-p Created by: #{poll.creator} at #{poll.createdAt}.
-p Expires: #{poll.expires}
+block content
+  h2 Voting topic: #{poll.name}
+  br
+  p
+  form(method='post', action='/polls/#{poll.uri}/vote')
+    input(type='hidden', name='pollId', value=#{poll.uri})
+    p
+      label Please enter your name:
+      input(type="textfield", name='voter')
+    p
+      each choice in poll.choices
+        input(type='radio', name='choice', value= choice.value, id=choice.value)
+        label= choice.text
+    p
+      input(type='submit')
+  br
+  br
+
+  p Created by: #{poll.creator} at #{poll.createdAt}.
+  p Expires: #{poll.expires}
 

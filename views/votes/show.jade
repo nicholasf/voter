@@ -1,3 +1,6 @@
-h2 Yay!
+extends ../layout
 
-p #{vote.voter}, thanks for your vote!
+block content
+  h2 Yay!
+
+  p #{vote.voter}, thanks for your vote! See the <a href="http://localhost:3000/polls/#{poll.uri}">poll page</a>.

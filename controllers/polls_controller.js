@@ -1,11 +1,12 @@
-var db = require('../db');
+var Poll = require('../models').Poll;
 
 /** Middlewares **/
 var getPoll = exports.getPoll = function(req, res, next){
   var pollId = req.params['pollId'];
-  var poll = db.polls[pollId];
-  req.poll = poll;
-  next();
+  Poll.find(pollId, function(err, poll){
+    req.poll = poll;
+    next();
+  });
 }
 
 /** Actions **/

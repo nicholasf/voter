@@ -15,7 +15,8 @@
     "mocha": "~1.12.0",
     "sugar": "~1.3.9",
     "moment": "~2.1.0",
-    "underscore": "~1.5.1"
+    "underscore": "~1.5.1",
+    "redis": "~0.8.4"
   },
   "devDependencies": {
     "bower": "*",

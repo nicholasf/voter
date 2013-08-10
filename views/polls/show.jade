@@ -1,16 +1,20 @@
 p
   h2 #{poll.name}?
 
-  dl
-    each choice in poll.choices
-      - var votes = poll.votesFor(choice)
-      dt #{choice.text}
-      dd #{votes.total} (#{votes.percentile}%)
+  if poll.choices
+    dl
+      each choice in poll.choices
+        - var votes = poll.votesFor(choice)
+        dt #{choice.text}
+        dd #{votes.total} (#{votes.percentile}%)
 p
 h4 Voting ends #{poll.expires}
 p
-  h4 Details
-  ul
-    each vote in poll.votes
-      li= vote.voter + " voted " + poll.textFor(vote.choice) + " at " + vote.createdAt
+  if poll.votes.length == 0
+    h4 There are no votes yet. Be the first?
+  else
+    h4 Details
+    ul
+      each vote in poll.votes
+        li= vote.voter + " voted " + poll.textFor(vote.choice) + " at " + vote.createdAt
 

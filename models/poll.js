@@ -1,4 +1,7 @@
-_ = require('underscore');
+var _ = require('underscore')
+  , redis = require('redis')
+  , client = redis.createClient();
+
 require('sugar');
 
 //a voting topic has a name
@@ -10,15 +13,19 @@ require('sugar');
 //note - this means that anyone who can access the URL of the
 //topic can vote (easier than inviting people).
 
-var Poll = function(name, creator, expires, choices){
+var Poll = function(name, creator, expires, choices, votes){
   this.name       = name;
   this.creator    = creator;
   this.expires    = expires;
   this.choices    = choices;
   this.createdAt  = new Date();
   this.uri        = name.dasherize();
-  this.votes      = [];
-  console.log("Created votingTopic: ", this.uri);
+  if (votes){
+    this.votes      = votes;
+  }
+  else {
+    this.votes      = [];
+  }
 
   this.addVote = function(vote){
     this.votes.push(vote);
@@ -48,6 +55,22 @@ var Poll = function(name, creator, expires, choices){
     }
     return _.find(this.choices, matcher).text
   }
+
+  this.save = function(){
+    client.set(this.uri, JSON.stringify(this));
+  }
+}
+
+Poll.fromJSON = function(json){
+  var data = JSON.parse(json);
+  poll =  new Poll(data.name, data.creator, data.expires, data.choices, data.votes);
+  return poll;
+}
+
+Poll.find = function(uri, cb){
+  client.get(uri, function(err, result){
+    cb(err, Poll.fromJSON(result))
+  });
 }
 
 module.exports = Poll;

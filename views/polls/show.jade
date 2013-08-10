@@ -1,1 +1,13 @@
-Show information about the poll ...
+p
+  h2 #{poll.name}?
+
+  dl
+    each choice in poll.choices
+      - var votes = poll.votesFor(choice)
+      dt #{choice.text}
+      dd #{votes.total} (#{votes.percentile}%)
+p
+  Votes: #{poll.votes.length}
+
+h4 Voting ends #{poll.expires}
+

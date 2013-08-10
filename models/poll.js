@@ -1,3 +1,4 @@
+_ = require('underscore');
 require('sugar');
 
 //a voting topic has a name
@@ -21,6 +22,22 @@ var Poll = function(name, creator, expires, choices){
 
   this.addVote = function(vote){
     this.votes.push(vote);
+  }
+
+  this.votesFor = function(choice){
+    var matcher = function(vote){
+      if(vote.choice == choice.value) return true;
+    }
+
+    var total = _.select(this.votes, matcher).length;
+    return {
+      total: total,
+      percentile: this.asPercentile(total) || 0
+    }
+  }
+
+  this.asPercentile = function(count){
+    return (count/this.votes.length) * 100;
   }
 }
 

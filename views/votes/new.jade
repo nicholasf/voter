@@ -8,7 +8,7 @@ form(method='post', action='/polls/#{poll.uri}/vote')
     input(type="textfield", name='voter')
   p
     each choice in poll.choices
-      input(type='radio', name='choice', value= #{choice.value}, id=#{choice.value})
+      input(type='radio', name='choice', value= choice.value, id=choice.value)
       label= choice.text
   p
     input(type='submit')

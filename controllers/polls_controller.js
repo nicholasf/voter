@@ -3,7 +3,7 @@ var Poll = require('../models').Poll
 
 /** Middlewares **/
 var getPoll = exports.getPoll = function(req, res, next){
-  var pollId = req.params.pollId;
+  var pollId = req.params[0] || req.params.pollId;
   Poll.find(pollId, function(err, poll){
     req.poll = poll;
     next();
@@ -28,6 +28,7 @@ var createPoll = exports.createPoll = function(req, res, next){
 };
 
 var deletePoll = exports.deletePoll = function(req, res, next) {
+  if(!req.poll) return next();
   req.poll.delete();
   next();
 };
@@ -36,6 +37,11 @@ var deletePoll = exports.deletePoll = function(req, res, next) {
 exports.show = function(req, res){
   eventer.emit('poll', req.poll);
   res.render('polls/show', {poll: req.poll});
+}
+
+exports.showJSON = function(req, res){
+  eventer.emit('poll', req.poll);
+  res.json(req.poll);
 }
 
 exports.list = function(req, res) {

@@ -75,6 +75,8 @@ var Poll = function(name, creator, expires, choices, votes){
 }
 
 Poll.fromJSON = function(json){
+  if(!json) return;
+
   var data = JSON.parse(json);
   poll =  new Poll(data.name, data.creator, data.expires, data.choices, data.votes);
   return poll;

@@ -1,16 +1,10 @@
 extends ../layout
 
 block content
-  script(type='text/javascript').
-    var sockjs_url = '/multiplex';
-    var sockjs = new SockJS(sockjs_url);
-    var multiplexer = new WebSocketMultiplex(sockjs);
-    var pollChannel = multiplexer.channel('#{poll.uri}');
-    pollChannel.onopen = function(){ alert('channel opened')}
-    pollChannel.onmessage = function(msg){ alert('msg received: ' + JSON.stringify(msg))}
-    pollChannel.onclose = function(){ alert('channel closed')}
-  p
-    h2 #{poll.name}?
+  script(src='/javascript/vote.js', type='text/javascript')
+
+  p(ng-controller='VoteCtrl')
+    h2=poll.name
 
     if poll.choices
       dl

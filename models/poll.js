@@ -39,6 +39,15 @@ var Poll = function(name, creator, expires, choices){
   this.asPercentile = function(count){
     return (count/this.votes.length) * 100;
   }
+
+  this.textFor = function(choiceValue){
+    var matcher = function(choice){
+      if(choice.value == choiceValue) {
+        return true;
+      }
+    }
+    return _.find(this.choices, matcher).text
+  }
 }
 
 module.exports = Poll;

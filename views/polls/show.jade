@@ -7,7 +7,10 @@ p
       dt #{choice.text}
       dd #{votes.total} (#{votes.percentile}%)
 p
-  Votes: #{poll.votes.length}
-
 h4 Voting ends #{poll.expires}
+p
+  h4 Details
+  ul
+    each vote in poll.votes
+      li= vote.voter + " voted " + poll.textFor(vote.choice) + " at " + vote.createdAt
 

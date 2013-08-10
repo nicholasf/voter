@@ -1,6 +1,8 @@
 path = require('path');
 fs   = require('fs');
 
+var ts = Date.now();
+
 var paths = {
   stylus:   path.join(__dirname, 'public', 'stylesheets'),
   js:       path.join(__dirname, 'public', 'javascript'),
@@ -8,10 +10,15 @@ var paths = {
   compiled: path.join(__dirname, 'public')
 };
 
-var ts = Date.now();
+var allJSFiles = function () {
+  var matcher = function(fn) { return /.*\.js/.test(fn); };
+  var files   = fs.readdirSync(paths.js).filter( matcher );
+
+  return files.map(function(fn) { return path.join(paths.js, fn); });
+};
 
 var jsAssets = {
-  raw:      fs.readdirSync(paths.js).filter( function(fn){ return /.*\.js/.test(fn); } ),
+  raw:      allJSFiles(),
   compiled: path.join(paths.compiled, 'app.'+ ts + '.js')
 };
 
@@ -24,6 +31,8 @@ var jadeAssets = {
   raw:      [path.join(paths.views, "index.jade")],
   compiled: path.join(paths.compiled, "app.html")
 };
+
+console.log(JSON.stringify(jsAssets));
 
 module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-jade');
@@ -54,7 +63,10 @@ module.exports = function(grunt) {
         options: {
           pretty: true,
           data: { 
-            assets: '<%= assets %>' 
+            assets:{
+              js:  [jsAssets.compiled.replace(paths.compiled, '')],
+              css: [stylusAssets.compiled.replace(paths.compiled, '')]
+            }
           }
         }
       }
@@ -72,6 +84,12 @@ module.exports = function(grunt) {
       compile: {
         src:  stylusAssets.raw,
         dest: stylusAssets.compiled
+      }
+    },
+    watch: {
+      assets: {
+        files: jsAssets.raw.concat(stylusAssets.raw, jadeAssets.raw),
+        tasks: ['clean', 'concat:appJS', 'stylus', 'jade:app']
       }
     }
   });

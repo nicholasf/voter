@@ -1,6 +1,14 @@
 extends ../layout
 
 block content
+  script(type='text/javascript').
+    var sockjs_url = '/multiplex';
+    var sockjs = new SockJS(sockjs_url);
+    var multiplexer = new WebSocketMultiplex(sockjs);
+    var pollChannel = multiplexer.channel('#{poll.uri}');
+    pollChannel.onopen = function(){ alert('channel opened')}
+    pollChannel.onmessage = function(msg){ alert('msg received: ' + JSON.stringify(msg))}
+    pollChannel.onclose = function(){ alert('channel closed')}
   p
     h2 #{poll.name}?
 
@@ -14,7 +22,7 @@ block content
   h4 Voting ends #{poll.expires}
   p
     if poll.votes.length == 0
-      h4 There are no votes yet. Be the first?
+      h4 There are no votes yet. Be the <a href="#{poll.uri}/vote">first</a>?
     else
       h4 Details
       ul

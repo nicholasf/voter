@@ -36,7 +36,6 @@ if ('development' == app.get('env')) {
 }
 
 routes.setup(app);
-
 server = http.createServer(app);
 events.setup(server);
 
@@ -57,13 +56,11 @@ server.listen(app.get('port'), function(){
 });
 
 
-// setting up a voting topic, just to get some dummy data rolling
-// var Poll = require('./models/poll');
-// var choices = [{value: 1, text: "Red"}, {value: 2, text: "White"}]
-// var poll = new Poll("Left Or Right", "nicholasf", 30, choices);
-// poll.save();
-// console.log(poll);
-// db.polls[poll.uri] = poll;
+//setting up a voting topic, just to get some dummy data rolling
+var Poll = require('./models/poll');
+var choices = [{value: 1, text: "Talisker"}, {value: 2, text: "Oban"}, {value: 3, text: "Ardberg"}]
+var poll = new Poll("Best single malt", "nicholasf", 30, choices);
+poll.save();
 
 
 

@@ -31,7 +31,6 @@ var Poll = function(name, creator, expires, choices, votes){
   this.addVote = function(vote){
     this.votes.push(vote);
     this.save();
-    console.log(eventer, " <<<  the emitter");
     eventer.emit('vote', vote);
   }
 
@@ -61,7 +60,15 @@ var Poll = function(name, creator, expires, choices, votes){
   }
 
   this.save = function(){
-    client.set(this.uri, JSON.stringify(this));
+    poll = this;
+
+    client.get(poll.uri, function(err, data){
+      // if (!data){
+      //   eventer.emit('poll', poll);
+      // }
+
+      client.set(poll.uri, JSON.stringify(poll));
+    });
   }
 }
 

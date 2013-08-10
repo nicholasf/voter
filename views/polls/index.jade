@@ -1,0 +1,39 @@
+extends ../layout
+
+block content
+  .polls(ng-controller='PollsCtrl')
+    h2 Polls
+    ul.poll-list(ng-repeat='poll in polls')
+      li.poll.row
+        a.name(href='/polls/{{poll.uri}}') {{poll.name}}
+        .actions
+          button.btn(ng-click='deletePoll(poll)').btn Delete
+
+
+    form.form-horizontal.span12
+      .row
+        .control-group
+          label.control-label Poll
+          .controls
+            input(type='text', placeholder='Poll Name', ng-model='name')
+      .row
+        .control-group
+          label.control-label Created by
+          .controls
+            input(type='text', placeholder='Your Name', ng-model='creator')
+      .row
+        .control-group
+          label.control-label Expires In
+          .controls
+            input(type='text', placeholder='Minutes', ng-model='expiresIn')
+      .row
+        .control-group
+          label.control-label Possible choices:
+          .controls
+            input(type='text', placeholder='Some Option', ng-model='choicesOne')
+            input(type='text', placeholder='Some Other Option', ng-model='choicesTwo')
+      .row
+        .control-group
+          .controls
+            button.btn-primary(ng-click='addPoll(name, creator, expiresIn, [choicesOne, choicesTwo])')
+              | Create Poll

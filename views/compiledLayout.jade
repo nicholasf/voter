@@ -1,0 +1,14 @@
+doctype 5
+html
+  head
+    link(rel='stylesheet', href='/app.css')
+    each asset in assets.css
+      link(rel='stylesheet', href=asset)
+    script(src='/lib/angular/angular.min.js')
+    script(src="/lib/sockjs/sockjs.min.js")
+    script(src="/lib/moment/min/moment.min.js")
+    each asset in assets.js
+      script(src=asset)
+
+  body
+    block content

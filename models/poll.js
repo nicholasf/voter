@@ -1,7 +1,8 @@
 var _ = require('underscore')
   , redis = require('redis')
   , client = redis.createClient()
-  , eventer = require('./../events').eventer;
+  , eventer = require('./../events').eventer
+  , async = require('async');
 
 require('sugar');
 
@@ -60,15 +61,16 @@ var Poll = function(name, creator, expires, choices, votes){
   }
 
   this.save = function(){
-    poll = this;
+    var poll = this;
+    console.log('saving:', poll.uri);
+    client.set(poll.uri, JSON.stringify(poll));
+    client.sadd('polls', poll.uri);
+  }
 
-    client.get(poll.uri, function(err, data){
-      // if (!data){
-      //   eventer.emit('poll', poll);
-      // }
-
-      client.set(poll.uri, JSON.stringify(poll));
-    });
+  this.delete = function(cb) {
+    var poll = this;
+    client.srem('polls', poll.uri);
+    client.del(poll.uri);
   }
 }
 
@@ -81,6 +83,26 @@ Poll.fromJSON = function(json){
 Poll.find = function(uri, cb){
   client.get(uri, function(err, result){
     cb(err, Poll.fromJSON(result))
+  });
+}
+
+Poll.all = function(cb) {
+  client.smembers('polls', function(err, uris) {
+    if(err) return cb(err);
+
+    var getPolls = uris.map( function(uri) {
+      return client.get.bind(client, uri);
+    });
+
+    async.series(getPolls, function(err, results) {
+      if(err) return cb(err);
+
+      var polls = results.map(function(json){
+        return Poll.fromJSON(json);
+      });
+
+      cb(null, polls);
+    });
   });
 }
 

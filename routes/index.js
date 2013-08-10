@@ -6,6 +6,10 @@ var votes         = require('./../controllers/votes_controller');
 exports.setup = function(app) {
   app.get('/',                    welcomer.home);
   app.get('/db',                  welcomer.db);
+  app.get('/polls',               polls.getPolls, polls.list);
+  app.get('/polls.json',          polls.getPolls, polls.listJSON);
+  app.post('/polls',              polls.createPoll, polls.getPolls, polls.list);
+  app.delete('/polls/:pollId',    polls.getPoll, polls.deletePoll, polls.delete);
   app.get('/polls/:pollId',       polls.getPoll, polls.show);
   app.get('/polls/:pollId/vote',  polls.getPoll, votes.new);
   app.post('/polls/:pollId/vote', polls.getPoll, votes.create);

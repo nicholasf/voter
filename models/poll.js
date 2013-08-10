@@ -1,6 +1,7 @@
 var _ = require('underscore')
   , redis = require('redis')
-  , client = redis.createClient();
+  , client = redis.createClient()
+  , eventer = require('./../events').eventer;
 
 require('sugar');
 
@@ -30,6 +31,8 @@ var Poll = function(name, creator, expires, choices, votes){
   this.addVote = function(vote){
     this.votes.push(vote);
     this.save();
+    console.log(eventer, " <<<  the emitter");
+    eventer.emit('vote', vote);
   }
 
   this.votesFor = function(choice){

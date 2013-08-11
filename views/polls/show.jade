@@ -1,25 +1,21 @@
 extends ../layout
 
 block content
-  script(src='/javascript/vote.js', type='text/javascript')
+  script(src='/javascript/poll.js', type='text/javascript')
 
-  p(ng-controller='VoteCtrl')
-    h2=poll.name
+  .poll(ng-controller='PollCtrl')
+    h2 {{poll.name}}
 
-    if poll.choices
-      dl
-        each choice in poll.choices
-          - var votes = poll.votesFor(choice)
-          dt #{choice.text}
-          dd #{votes.total} (#{votes.percentile}%)
-  p
-  h4 Voting ends #{poll.expires}
-  p
-    if poll.votes.length == 0
-      h4 There are no votes yet. Be the <a href="#{poll.uri}/vote">first</a>?
-    else
-      h4 Details
-      ul
-        each vote in poll.votes
-          li= vote.voter + " voted " + poll.textFor(vote.choice) + " at " + vote.createdAt
+    input(ng-model='voter', placeholder='Your name...')
+
+    dl(ng-repeat='choice in poll.choices', ng-click='lodgeVote(voter, choice)')
+      dt {{choice.text}}
+      dd(ng-bind-template='{{choice.score.total}} ({{choice.score.percentile}} %)') 
+
+    a(href="/polls/#{poll.uri}/vote")
+    h4 Voting ends {{poll.expires}}
+
+    h4 Details
+    ul(ng-repeat='vote in poll.votes')
+      li(ng-bind-template='{{vote.voter}} voted  at {{vote.createdAt}}')
 

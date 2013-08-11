@@ -23,7 +23,8 @@ var PollChannel = function(channel, poll){
   channel.on('connection', function(conn){
     console.log("**** pushing a connection for ", poll.uri);
     pollChannel.connections.push(conn);
-    conn.write("Connected!", pollChannel.connections);
+    var payload = {action: "connected", poll: poll};
+    conn.write(JSON.stringify(payload), pollChannel.connections);
   })
 }
 
@@ -34,20 +35,19 @@ eventer.on('poll', function(vote){
   channels[poll.uri] = pollChannel;
 })
 
-eventer.on('vote', function(vote){
+eventer.on('vote', function(poll){
   //find the poll channel
   //send a message to all of its connections.
   console.log("the channels .... ");
   console.log(channels);
-  var pollChannel = channels[vote.pollUri];
+  var pollChannel = channels[poll.uri];
 
   var notifier = function(connection){
-    connection.write("hello! ");
-    connection.write(JSON.stringify(vote));
+    var payload = {action: 'vote', poll: poll}
+    connection.write(JSON.stringify(payload));
   }
 
   _.each(pollChannel.connections, notifier);
-  console.log(vote, " new vote ");
 })
 
 exports.eventer = eventer;

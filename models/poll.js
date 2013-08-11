@@ -16,23 +16,34 @@ require('sugar');
 //topic can vote (easier than inviting people).
 
 var Poll = function(name, creator, expires, choices, votes){
-  this.name       = name;
-  this.creator    = creator;
-  this.expires    = expires;
-  this.choices    = choices;
-  this.createdAt  = new Date();
-  this.uri        = name.dasherize();
-  if (votes){
-    this.votes      = votes;
+  this.init = function(){
+    this.name       = name;
+    this.creator    = creator;
+    this.expires    = expires;
+    this.choices    = choices;
+    this.createdAt  = new Date();
+    this.uri        = name.dasherize();
+    if (votes){
+      this.votes      = votes;
+    }
+    else {
+      this.votes      = [];
+    }
+    this.updateScores();
   }
-  else {
-    this.votes      = [];
-  }
-
+  
   this.addVote = function(vote){
     this.votes.push(vote);
+    this.updateScores();
     this.save();
-    eventer.emit('vote', vote);
+    eventer.emit('vote', this);
+  }
+
+  this.updateScores = function() {
+    var _this = this
+    _.each(this.choices, function(choice) {
+      choice.score = _this.votesFor(choice);
+    })
   }
 
   this.votesFor = function(choice){
@@ -62,7 +73,7 @@ var Poll = function(name, creator, expires, choices, votes){
 
   this.save = function(){
     var poll = this;
-    console.log('saving:', poll.uri);
+
     client.set(poll.uri, JSON.stringify(poll));
     client.sadd('polls', poll.uri);
   }
@@ -72,6 +83,8 @@ var Poll = function(name, creator, expires, choices, votes){
     client.srem('polls', poll.uri);
     client.del(poll.uri);
   }
+
+  this.init();
 }
 
 Poll.fromJSON = function(json){

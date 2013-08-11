@@ -13,8 +13,8 @@ exports.setup = function(app) {
   app.post('/polls',              polls.createPoll, polls.getPolls, polls.list);
   app.delete('/polls/:pollId',    polls.getPoll, polls.deletePoll, polls.delete);
 
-  app.get(/\/polls\/(.+)$/,        polls.getPoll, polls.show);
-  app.get(/\/polls\/(.+).json$/,   polls.getPoll, polls.showJSON);
+  app.get(/\/polls\/([^\/]+).json$/,   polls.getPoll, polls.showJSON);
+  app.get(/\/polls\/([^\/]+)$/,        polls.getPoll, polls.show);
 
   app.get('/polls/:pollId/vote',  polls.getPoll, votes.new);
   app.post('/polls/:pollId/vote', polls.getPoll, votes.create);

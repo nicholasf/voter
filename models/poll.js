@@ -86,16 +86,19 @@ var Poll = function(name, creator, expires, choices, votes){
     return _.find(this.choices, matcher).text
   }
 
-  this.save = function(){
+  this.save = function(resetExpiry){
     var poll = this;
 
     client.set(poll.uri, JSON.stringify(poll));
     client.sadd('polls', poll.uri);
-    var expiry = Date.now() + (this.expires * 1000);
-    
+    if(!resetExpiry) return;
+
+    var expiry = Date.now() + (this.expires * 60 * 1000);
     console.log("EXPIRES:", expiry);
+
     client.pexpireat(poll.uri, expiry);
     client.pexpireat('polls', expiry);
+    eventer.emit('poll', this);
   }
 
   this.delete = function(cb) {

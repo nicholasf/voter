@@ -9,8 +9,16 @@ exports.new = function(req, res){
 exports.create = function(req, res){
   var voter   = req.body.voter;
   var choice  = req.body.choice;
-  var vote    = new models.Vote(req.poll.uri, voter, choice);
-  req.poll.addVote(vote);
-  res.render('votes/show', {vote: vote})
+  var vote;
+  var error;
+  if(req.poll) {
+    vote = new models.Vote(req.poll.uri, voter, choice);
+    req.poll.addVote(vote);
+  }
+  else {
+    error = 'question expired';
+  }
+  
+  res.render('votes/show', {vote: vote, error: error});
 }
 

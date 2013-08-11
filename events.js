@@ -14,21 +14,22 @@ exports.setup = function(server){
   service.installHandlers(server, {prefix:'/multiplex'});
 }
 
-
 var PollChannel = function(channel, poll){
-  this.channel  = channel;
-  this.poll     = poll;
+  this.channel     = channel;
+  this.poll        = poll;
   this.connections = [];
-  var pollChannel = this;
+
+  var pollChannel  = this;
   channel.on('connection', function(conn){
     console.log("**** pushing a connection for ", poll.uri);
     pollChannel.connections.push(conn);
+ 
     var payload = {action: "connected", poll: poll};
     conn.write(JSON.stringify(payload), pollChannel.connections);
   })
 }
 
-eventer.on('poll', function(vote){
+eventer.on('poll', function(poll){
   console.log("received a poll");
   var pollChannel = new PollChannel(multiplexer.registerChannel(poll.uri), poll);
   console.log(pollChannel);

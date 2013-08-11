@@ -60,7 +60,7 @@ server.listen(app.get('port'), function(){
 var Poll = require('./models/poll');
 var choices = [{value: 1, text: "Talisker"}, {value: 2, text: "Oban"}, {value: 3, text: "Ardberg"}]
 var poll = new Poll("Best single malt", "nicholasf", 30, choices);
-poll.save();
+poll.save(true);
 
 
 

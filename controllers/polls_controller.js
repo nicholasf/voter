@@ -1,5 +1,4 @@
-var Poll = require('../models').Poll
-  , eventer = require('../events').eventer;
+var Poll = require('../models').Poll;
 
 /** Middlewares **/
 var getPoll = exports.getPoll = function(req, res, next){
@@ -24,7 +23,7 @@ var createPoll = exports.createPoll = function(req, res, next){
   });
 
   var poll = new Poll(req.body.name, req.body.creator, req.body.expiresIn, choices);
-  poll.save();
+  poll.save(true);
   next();
 };
 
@@ -36,12 +35,10 @@ var deletePoll = exports.deletePoll = function(req, res, next) {
 
 /** Actions **/
 exports.show = function(req, res){
-  eventer.emit('poll', req.poll);
   res.render('polls/show', {poll: req.poll});
 }
 
 exports.showJSON = function(req, res){
-  eventer.emit('poll', req.poll);
   res.json(req.poll);
 }
 

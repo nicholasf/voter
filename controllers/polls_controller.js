@@ -4,6 +4,7 @@ var Poll = require('../models').Poll
 /** Middlewares **/
 var getPoll = exports.getPoll = function(req, res, next){
   var pollId = req.params[0] || req.params.pollId;
+  console.log('ID:', pollId);
   Poll.find(pollId, function(err, poll){
     req.poll = poll;
     next();

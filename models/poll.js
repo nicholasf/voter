@@ -144,6 +144,6 @@ Poll.all = function(cb) {
 }
 
 Poll.keyFrom = function(name) {
-  return name.dasherize().replace(/[^a-z,A-Z,0-9]/g, '');
+  return name.dasherize().replace(/[^a-z,A-Z,0-9,\-]/g, '');
 }
 module.exports = Poll;

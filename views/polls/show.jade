@@ -8,7 +8,7 @@ block content
 
     input(ng-model='voter', placeholder='Your name...')
 
-    dl(ng-repeat='choice in poll.choices', ng-click='lodgeVote(voter, choice)')
+    dl(ng-repeat='choice in poll.choices', ng-click='lodgeVote(choice)')
       dt {{choice.text}}
       dd(ng-bind-template='{{choice.score.total}} ({{choice.score.percentile}} %)') 
 

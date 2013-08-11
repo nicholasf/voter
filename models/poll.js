@@ -31,8 +31,21 @@ var Poll = function(name, creator, expires, choices, votes){
     }
     this.updateScores();
   }
-  
+
+  this.hasVoted = function(voter) {
+    if(!voter) return false;
+
+    return !!_.find(this.votes, function(vote){
+      return (vote.voter || '').toLowerCase() == voter.toLowerCase();
+    });
+  }
+
   this.addVote = function(vote){
+    if(this.hasVoted(vote.voter)) {
+      console.log('Voter has already voted....');
+      return;
+    }
+
     this.votes.push(vote);
     this.updateScores();
     this.save();
@@ -76,6 +89,11 @@ var Poll = function(name, creator, expires, choices, votes){
 
     client.set(poll.uri, JSON.stringify(poll));
     client.sadd('polls', poll.uri);
+    var expiry = Date.now() + (this.expires * 1000);
+    
+    console.log("EXPIRES:", expiry);
+    client.pexpireat(poll.uri, expiry);
+    client.pexpireat('polls', expiry);
   }
 
   this.delete = function(cb) {
@@ -92,6 +110,7 @@ Poll.fromJSON = function(json){
 
   var data = JSON.parse(json);
   poll =  new Poll(data.name, data.creator, data.expires, data.choices, data.votes);
+  if(data.createdAt) poll.createdAt = new Date(data.createdAt);
   return poll;
 }
 

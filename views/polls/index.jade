@@ -6,7 +6,7 @@ block content
     ul.poll-list(ng-repeat='poll in polls')
       li.poll.row
         a.name(href='/polls/{{poll.uri}}') {{poll.name}}
-        .actions
+        .actions(ng-show="isAdmin")
           button.btn(ng-click='deletePoll(poll)').btn Delete
 
 
@@ -30,10 +30,11 @@ block content
         .control-group
           label.control-label Possible choices:
           .controls
-            input(type='text', placeholder='Some Option', ng-model='choicesOne')
-            input(type='text', placeholder='Some Other Option', ng-model='choicesTwo')
+            ul.choices
+              li.choice(ng-repeat='choice in choices') {{choice}}
+            input.choice(ng-blur='addChoice()', ng-model='newChoice', type='text', placeholder='New Option')
       .row
         .control-group
           .controls
-            button.btn-primary(ng-click='addPoll(name, creator, expiresIn, [choicesOne, choicesTwo])')
+            button.btn-primary(ng-click='addPoll(name, creator, expiresIn)')
               | Create Poll

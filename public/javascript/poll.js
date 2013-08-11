@@ -1,6 +1,5 @@
 var PollCtrl = function($scope, $http) {
   var pollUri  = document.location.pathname.match(/\/([^\/]*)$/)[1];
-  $scope.voter = '';
 
   var monitorPoll = function() {
     var sockjs_url  = '/multiplex';
@@ -24,7 +23,8 @@ var PollCtrl = function($scope, $http) {
     }
   };
 
-  $scope.lodgeVote = function(voter, choice) {
+  $scope.lodgeVote = function(choice) {
+    if(!$scope.voter) return;
     var path = document.location.pathname + '/vote';
     $http.post(path, {pollId: pollUri, voter: $scope.voter, choice: choice.value})
   };

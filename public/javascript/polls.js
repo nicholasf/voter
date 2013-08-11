@@ -1,16 +1,27 @@
+
 var PollsCtrl = function($scope, $http) {
+
+  $scope.isAdmin = document.location.hash == '#admin';
+  $scope.choices = [];
+
   var refreshData = function() {
     $http.get('/polls.json').success(function(data){
       $scope.polls = data;
     });
   };
 
-  $scope.addPoll = function(name, creator, expiresIn, choices) {
+  $scope.addChoice = function() {
+    if(!$scope.newChoice) return;
+    $scope.choices.push($scope.newChoice);
+    $scope.newChoice = '';
+  }
+
+  $scope.addPoll = function(name, creator, expiresIn) {
     var poll = {
       name: name,
       creator: creator,
       expiresIn: expiresIn,
-      choices: choices
+      choices: $scope.choices
     };
 
     $http.post('/polls', poll)
@@ -20,7 +31,6 @@ var PollsCtrl = function($scope, $http) {
   };
 
   $scope.deletePoll = function(poll) {
-    console.log('Deleting', poll);
     $http.delete('/polls/'+ poll.uri)
       .success(function(){
         refreshData();

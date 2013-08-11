@@ -10,6 +10,10 @@ var PollsCtrl = function($scope, $http) {
     });
   };
 
+  $scope.onPollClick = function(poll) {
+    document.location.href = '/polls/' + poll.uri;
+  };
+
   $scope.addChoice = function() {
     if(!$scope.newChoice) return;
     $scope.choices.push($scope.newChoice);

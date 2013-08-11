@@ -22,7 +22,8 @@ var Poll = function(name, creator, expires, choices, votes){
     this.expires    = expires;
     this.choices    = choices;
     this.createdAt  = new Date();
-    this.uri        = name.dasherize();
+    this.uri        = Poll.keyFrom(name);
+
     if (votes){
       this.votes      = votes;
     }
@@ -31,6 +32,7 @@ var Poll = function(name, creator, expires, choices, votes){
     }
     this.updateScores();
   }
+
 
   this.hasVoted = function(voter) {
     if(!voter) return false;
@@ -115,6 +117,7 @@ Poll.fromJSON = function(json){
 }
 
 Poll.find = function(uri, cb){
+  console.log('finding', uri);
   client.get(uri, function(err, result){
     cb(err, Poll.fromJSON(result))
   });
@@ -140,4 +143,7 @@ Poll.all = function(cb) {
   });
 }
 
+Poll.keyFrom = function(name) {
+  return name.dasherize().replace(/[^a-z,A-Z,0-9]/g, '');
+}
 module.exports = Poll;

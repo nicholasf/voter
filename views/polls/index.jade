@@ -2,39 +2,44 @@ extends ../layout
 
 block content
   .polls(ng-controller='PollsCtrl')
-    h2 Polls
-    ul.poll-list(ng-repeat='poll in polls')
-      li.poll.row
-        a.name(href='/polls/{{poll.uri}}') {{poll.name}}
-        .actions(ng-show="isAdmin")
-          button.btn(ng-click='deletePoll(poll)').btn Delete
+    .all-polls(ng-show='polls.length')
+      h2 I want to Vote on...
+      ul.poll-list
+        li.poll.btn.row(ng-repeat='poll in polls', ng-click="onPollClick(poll)")
+          .name {{poll.name}}
+          .actions(ng-show="isAdmin")
+            button.btn(ng-click='deletePoll(poll)').btn Delete
 
+    .create-poll
+      h2 I want to ask...
+      form.form.span12
+        .row
+          .control-group
+            label.control-label
+            .controls
+              input(type='text', placeholder='A Question', ng-model='name')
+        .row
+          .control-group
+            label.control-label With the following valid answers:
+            .controls.choices
+              ul
+                li.choice(ng-repeat='choice in choices') {{choice}}
+              .input-append
+                input.choice(ng-model='newChoice', type='text', placeholder='New Option')
+                button.btn(ng-click='addChoice()') + 
 
-    form.form-horizontal.span12
-      .row
-        .control-group
-          label.control-label Poll
-          .controls
-            input(type='text', placeholder='Poll Name', ng-model='name')
-      .row
-        .control-group
-          label.control-label Created by
-          .controls
-            input(type='text', placeholder='Your Name', ng-model='creator')
-      .row
-        .control-group
-          label.control-label Expires In
-          .controls
-            input(type='text', placeholder='Minutes', ng-model='expiresIn')
-      .row
-        .control-group
-          label.control-label Possible choices:
-          .controls
-            ul.choices
-              li.choice(ng-repeat='choice in choices') {{choice}}
-            input.choice(ng-blur='addChoice()', ng-model='newChoice', type='text', placeholder='New Option')
-      .row
-        .control-group
-          .controls
-            button.btn-primary(ng-click='addPoll(name, creator, expiresIn)')
-              | Create Poll
+        .row
+          .control-group
+            label.control-label It will expire in (minutes)
+            .controls.expiry
+              input(type='text', placeholder='20', ng-model='expiresIn')
+        .row
+          .control-group
+            label.control-label I am
+            .controls
+              input(type='text', placeholder='Your Name', ng-model='creator')
+        .row
+          .control-group
+            .controls
+              button.btn.btn-primary(ng-click='addPoll(name, creator, expiresIn)')
+                | Create Poll

@@ -16,23 +16,6 @@ require('sugar');
 //topic can vote (easier than inviting people).
 
 var Poll = function(name, creator, expires, choices, votes){
-  this.init = function(){
-    this.name       = name;
-    this.creator    = creator;
-    this.expires    = expires;
-    this.choices    = choices;
-    this.createdAt  = new Date();
-    this.uri        = Poll.keyFrom(name);
-
-    if (votes){
-      this.votes      = votes;
-    }
-    else {
-      this.votes      = [];
-    }
-    this.updateScores();
-  }
-
 
   this.hasVoted = function(voter) {
     if(!voter) return false;
@@ -107,7 +90,20 @@ var Poll = function(name, creator, expires, choices, votes){
     client.del(poll.uri);
   }
 
-  this.init();
+  this.name       = name;
+  this.creator    = creator;
+  this.expires    = expires;
+  this.choices    = choices;
+  this.createdAt  = new Date();
+  this.uri        = Poll.keyFrom(name);
+
+  if (votes){
+    this.votes = votes;
+    this.updateScores();
+  }
+  else {
+    this.votes      = [];
+  }
 }
 
 Poll.fromJSON = function(json){

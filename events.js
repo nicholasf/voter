@@ -24,8 +24,12 @@ var PollChannel = function(channel, poll){
     console.log("**** pushing a connection for ", poll.uri);
     pollChannel.connections.push(conn);
  
-    var payload = {action: "connected", poll: poll};
-    conn.write(JSON.stringify(payload), pollChannel.connections);
+    //refresh the poll with current votes
+    poll.constructor.find(poll.uri, function(err, poll){
+      var payload = {action: "connected", poll: poll};
+      conn.write(JSON.stringify(payload), pollChannel.connections);
+    });
+    
   })
 }
 

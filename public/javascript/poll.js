@@ -1,7 +1,7 @@
 var PollCtrl = function($scope, $http) {
-  var clockRefreshInterval = 1000;
+  var clockRefreshInterval = 5000;
   var pollUri  = document.location.pathname.match(/\/([^\/]*)$/)[1];
-  $scope.counter = { seconds: 9999};
+  $scope.counter = { seconds: 'calculcating' };
 
   var monitorPoll = function() {
     var sockjs_url  = '/multiplex';
@@ -31,7 +31,6 @@ var PollCtrl = function($scope, $http) {
       });
     };
 
-    if(!$scope.counter) updateClock();
     setTimeout(updateClock, clockRefreshInterval);
   };
 
@@ -53,5 +52,5 @@ var PollCtrl = function($scope, $http) {
   };
 
   monitorPoll();
-  // updateTimer();
+  updateTimer();
 };

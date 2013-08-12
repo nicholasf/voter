@@ -13,12 +13,13 @@ input[type=text]
 label
   font-weight: bold
 
-.polls
-  input
-    margin-right: 5px
-  ul.poll-list
-    list-style: none
-    margin-left: 0
+ul
+  list-style: none
+  margin-left: 0
+  &.choice-list
+    margin-left: 20px
+    list-style-type: lower-roman
+  &.poll-list
     margin-bottom: 50px
     li.btn
       padding:  25px 10px
@@ -38,6 +39,16 @@ label
         width:   200px
       .actions
         display: inline-block
+  &.results
+    li
+      margin-top:20px
+      label, span
+        font-size:18px
+        display: inline-block
+.polls
+  input
+    margin-right: 5px
+
   .create-poll
     .choices
       button

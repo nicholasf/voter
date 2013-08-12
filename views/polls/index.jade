@@ -22,7 +22,7 @@ block content
           .control-group
             label.control-label With the following valid answers:
             .controls.choices
-              ul
+              ul.choice-list
                 li.choice(ng-repeat='choice in choices') {{choice}}
               .input-append
                 input.choice(ng-model='newChoice', type='text', placeholder='New Option')

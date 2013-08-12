@@ -1,6 +1,7 @@
 var PollCtrl = function($scope, $http) {
   var clockRefreshInterval = 1000;
   var pollUri  = document.location.pathname.match(/\/([^\/]*)$/)[1];
+  $scope.counter = { seconds: 9999};
 
   var monitorPoll = function() {
     var sockjs_url  = '/multiplex';
@@ -13,14 +14,11 @@ var PollCtrl = function($scope, $http) {
     pollChannel.onclose   = function(){ console.log('channel closed')};
   };
 
-  var initializeTimer = function() {
-    if($scope.counter) {
-      console.log('counter:', $scope.counter);
-      return;
-    }
-
+  var updateTimer = function() {
     var updateClock = function() {
       $scope.$apply( function() {
+        if(!$scope.poll) return ($scope.counter = { seconds: 0});
+
         var duration = $scope.poll.expires * 60 * 1000;
         var started  = new Date($scope.poll.createdAt).getTime();
         var endsAt   = started + duration;
@@ -33,6 +31,7 @@ var PollCtrl = function($scope, $http) {
       });
     };
 
+    if(!$scope.counter) updateClock();
     setTimeout(updateClock, clockRefreshInterval);
   };
 
@@ -43,7 +42,6 @@ var PollCtrl = function($scope, $http) {
     if(data.poll) {
       $scope.$apply( function() {
         $scope.poll = data.poll;
-        initializeTimer();
       });
     }
   };
@@ -55,4 +53,5 @@ var PollCtrl = function($scope, $http) {
   };
 
   monitorPoll();
+  // updateTimer();
 };

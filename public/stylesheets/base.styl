@@ -45,6 +45,7 @@ ul
       label, span
         font-size:18px
         display: inline-block
+
 .polls
   input
     margin-right: 5px
@@ -64,3 +65,17 @@ ul
     margin:   10px 0
     display:  block
     position: relative
+
+  .tally
+    position: absolute
+    text-align: center
+    width: 100%
+    margin-left: -10px
+  .tally-bar
+    transition: width 2s
+    height: 20px
+    width: 0%
+    background-color: #09509F
+    opacity: 0.3
+    left: -10px
+    position: absolute

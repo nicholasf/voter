@@ -13,9 +13,10 @@ block content
       dd(ng-bind-template='{{choice.score.total}} ({{choice.score.percentile}} %)') 
 
     a(href="/polls/#{poll.uri}/vote")
-    h4 Voting ends {{poll.expires}}
+    h4 Voting open for {{poll.expires}} minutes
+    .timer(ng-bind-template="{{counter.seconds}} seconds remaining")
 
-    h4 Details
+    h4 Activity
     ul(ng-repeat='vote in poll.votes')
       li(ng-bind-template='{{vote.voter}} voted  at {{vote.createdAt}}')
 
